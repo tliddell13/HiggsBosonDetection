@@ -179,6 +179,10 @@ def getResults(train_losses, test_losses, model, X_test, y_test):
     # Calculate the results
     y_pred = torch.argmax(y_pred, dim=1)
     y_test = y_test.squeeze()
+    # If the model is on the gpu, move the tensors to the cpu
+    if y_pred.is_cuda:
+        y_pred = y_pred.cpu()
+        y_test = y_test.cpu()
     f1 = f1_score(y_test, y_pred)
     acc = accuracy_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
