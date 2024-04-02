@@ -1,27 +1,48 @@
 # This file is for training the MLP's on a larger amount of the data using a GPU
 import sys
 import torch
+import pickle
 import torch.nn as nn
 import torch.optim as optim
 import MLPfunctions as mlp
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 sys.stdout = open('bosonTrain.txt', 'w')
 
 # Load the data
-dataset = pd.loadcsv('HIGGS_train.csv')
+dataset = pd.read_csv('HIGGS_train.csv')
 # Take about a third of the data (a couple million rows)
 dataset = dataset.sample(frac=0.33)
+# This time I am going to use cyclic feature encoding on the angular features and scaling all the features
+angular_feats = ['lepton phi', 'missing energy phi', 'jet 1 phi', 'jet 2 phi', 'jet 3 phi', 'jet 4 phi']
+X = dataset.iloc[:, 1:]
+y = dataset.iloc[:, 0]
+
+# Make it cyclical! (sin and cos)
+for feat in angular_feats:
+    sin = feat + '_sin'
+    cos = feat + '_cos'
+    X = X.assign(**{sin: np.sin(X[feat] * np.pi / 180)})
+    X = X.assign(**{cos: np.cos(X[feat] * np.pi / 180)})
+
+# Drop the original features
+X = X.drop(angular_feats, axis=1)
+
+# Scale the data
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
+
 # Set aside some validation data
-val_data = dataset.sample(frac=0.1)
+X_val = X[:290000].values
+y_val = y[:290000].values
+
 # Remove the validation data from the dataset
-dataset = dataset.drop(val_data.index)
-# Split the data into features and labels
-X = dataset.iloc[:, 1:].values
-y = dataset.iloc[:, 0].values
-X_val = val_data.iloc[:, 1:].values
-y_val = val_data.iloc[:, 0].values
+X = X[290000:].values
+y = y[290000:].values
+
 # Split the data into training and testing data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
@@ -48,8 +69,6 @@ print(f'Device: {device}')
 
 input_size = X_train.shape[1]
 
-model1 = mlp.MLP_mach1(input_size, 30)
-model1.to(device)
 # Set the tensors to the device
 X_train = X_train.to(device)
 y_train = y_train.to(device)
@@ -58,46 +77,25 @@ y_test = y_test.to(device)
 X_val = X_val.to(device)
 y_val = y_val.to(device)
 
-n_epochs = 2000
-
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model1.parameters(), lr=0.001)
-train_losses, test_losses = mlp.train_model(model1, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs)
-# Evaluate the model using our function
-f1, acc, cm = mlp.getResults(train_losses, test_losses, model1, X_val, y_val)
-print(f"F1: {f1}")
-print(f"Accuracy: {acc}")
-print(f"Confusion Matrix: {cm}")
-# Save the model
-torch.save(model1.state_dict(), 'model1.pth')
-
-model2 = mlp.MLP_mach2(input_size, 100, 70, 50, 25, 0.2)
-model2.to(device)
-n_epochs = 3000
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model2.parameters(), lr=0.001)
-train_losses, test_losses = mlp.train_model(model2, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs)
-# Evaluate the model using our function
-f1, acc, cm = mlp.getResults(train_losses, test_losses, model2, X_val, y_val)
-print(f"F1: {f1}")
-print(f"Accuracy: {acc}")
-print(f"Confusion Matrix: {cm}")
-# Save the model
-torch.save(model2.state_dict(), 'model2.pth')
-
-model3 = mlp.MLP_mach3(28, 300, 250, 200, 150, 100, 50, 0.2)
-model3.to(device)
+model4 = mlp.MLP_mach3(input_size, 400, 320, 240, 160, 80, 40, 0.1)
+model4.to(device)
 n_epochs = 6000
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model3.parameters(), lr=0.001)
-train_losses, test_losses = mlp.train_model(model3, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs)
+optimizer = optim.Adam(model4.parameters(), lr=0.005)
+train_losses, test_losses = mlp.train_model(model4, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs)
 # Evaluate the model using our function
-f1, acc, cm = mlp.getResults(train_losses, test_losses, model3, X_val, y_val)
+f1, acc, cm = mlp.getResults(train_losses, test_losses, model4, X_val, y_val)
 print(f"F1: {f1}")
 print(f"Accuracy: {acc}")
 print(f"Confusion Matrix: {cm}")
 # Save the model
-torch.save(model3.state_dict(), 'model3.pth')
+torch.save(model4.state_dict(), 'model4.pth')
+# Save the training and testing losses as well  
+with open('train_losses.pkl', 'wb') as f:
+    pickle.dump(train_losses, f)
+
+with open('test_losses.pkl', 'wb') as f:
+    pickle.dump(test_losses, f)
 
 sys.stdout.close()
 
