@@ -59,6 +59,7 @@ X_val = X_val.to(device)
 y_val = y_val.to(device)
 
 n_epochs = 2000
+
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model1.parameters(), lr=0.001)
 train_losses, test_losses = mlp.train_model(model1, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs)
@@ -70,7 +71,7 @@ print(f"Confusion Matrix: {cm}")
 # Save the model
 torch.save(model1.state_dict(), 'model1.pth')
 
-model2 = mlp.MLP_mach2(input_size, 100, 50, 25, 0.5)
+model2 = mlp.MLP_mach2(input_size, 100, 70, 50, 25, 0.2)
 model2.to(device)
 n_epochs = 3000
 criterion = nn.CrossEntropyLoss()
