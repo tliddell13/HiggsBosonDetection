@@ -10,8 +10,6 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-sys.stdout = open('bosonTrain.txt', 'w')
-
 # Load the data
 dataset = pd.read_csv('HIGGS_train.csv')
 # Take about a third of the data (a couple million rows)
@@ -97,7 +95,6 @@ with open('train_losses.pkl', 'wb') as f:
 with open('test_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
-sys.stdout.close()
 
 
 
