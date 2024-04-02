@@ -52,6 +52,11 @@ n_epochs = 2000
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model1.parameters(), lr=0.001)
 train_losses, test_losses = mlp.train_model(model1, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs)
+# Evaluate the model using our function
+f1, acc, cm = mlp.getResults(train_losses, test_losses, model1, X_val, y_val)
+print(f"F1: {f1}")
+print(f"Accuracy: {acc}")
+print(f"Confusion Matrix: {cm}")
 # Save the model
 torch.save(model1.state_dict(), 'model1.pth')
 
@@ -61,6 +66,11 @@ n_epochs = 3000
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model2.parameters(), lr=0.001)
 train_losses, test_losses = mlp.train_model(model2, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs)
+# Evaluate the model using our function
+f1, acc, cm = mlp.getResults(train_losses, test_losses, model2, X_val, y_val)
+print(f"F1: {f1}")
+print(f"Accuracy: {acc}")
+print(f"Confusion Matrix: {cm}")
 # Save the model
 torch.save(model2.state_dict(), 'model2.pth')
 
@@ -70,6 +80,11 @@ n_epochs = 6000
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model3.parameters(), lr=0.001)
 train_losses, test_losses = mlp.train_model(model3, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs)
+# Evaluate the model using our function
+f1, acc, cm = mlp.getResults(train_losses, test_losses, model3, X_val, y_val)
+print(f"F1: {f1}")
+print(f"Accuracy: {acc}")
+print(f"Confusion Matrix: {cm}")
 # Save the model
 torch.save(model3.state_dict(), 'model3.pth')
 
