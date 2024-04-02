@@ -77,7 +77,7 @@ y_test = y_test.to(device)
 X_val = X_val.to(device)
 y_val = y_val.to(device)
 
-model4 = mlp.MLP_mach3(input_size, 400, 320, 240, 160, 80, 40, 0.1)
+model4 = mlp.MLP_mach3(input_size, 400, 320, 240, 160, 80, 40, 0.1, patience=100)
 model4.to(device)
 n_epochs = 6000
 criterion = nn.CrossEntropyLoss()

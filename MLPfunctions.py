@@ -146,9 +146,19 @@ class MLP_mach3(nn.Module):
         return out
     
 # Function to easily train the model. Can set the number of epochs, the criterion and the optimizer
-def train_model(model, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs):
+def train_model(model, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs, patience=None):
     train_losses = []
     test_losses = []
+
+    best_loss = float('inf') 
+
+    patience_counter = 0 
+    
+    if patience is not None:
+        early_stop = True  
+    else:
+        early_stop = False  
+
     for epoch in range(n_epochs):
         model.train()
         # Forward pass
@@ -165,6 +175,19 @@ def train_model(model, X_train, y_train, X_test, y_test, criterion, optimizer, n
         loss = criterion(y_pred.squeeze(), y_test)
         test_losses.append(loss.item())
         print(f'Epoch {epoch+1}/{n_epochs}, Train Loss: {train_losses[-1]}, Test Loss: {test_losses[-1]}')
+
+        # Early stopping condition
+        if early_stop:
+            if test_losses[-1] < best_loss:
+                best_loss = test_losses[-1]
+                patience_counter = 0
+            else:
+                patience_counter += 1
+
+            if patience_counter >= patience:
+                print(f'Early stopping at epoch {epoch+1}')
+                break
+
     return train_losses, test_losses
 
 # This function plots the training and test losses, and returns f1 score, accuracy and confusion matrix
