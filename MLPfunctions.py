@@ -77,9 +77,11 @@ class MLP_mach2(nn.Module):
 # Bigger model with 6 hidden layers. Going to start with the hidden neurons set to 300 and drop by 50 each layer
 # ending with 50 neurons in the last hidden layer. Trying a softmax activation function for the output layer
 # If it seems to work at all, will train on a gpu with a larger amount of the data
+# Found that using ReLU for activation in each layer is the best
 class MLP_mach3(nn.Module):
-    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None):
+    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None): # Dropout is optional
         super(MLP_mach3, self).__init__()
+        # Set the sizes of the layers
         self.input_size = input_size 
         self.hidden_size1 = hidden1
         self.hidden_size2 = hidden2
@@ -88,39 +90,40 @@ class MLP_mach3(nn.Module):
         self.hidden_size5 = hidden5
         self.hidden_size6 = hidden6
         self.output_size = 2  
-
+        # Input layer
         self.fc1 = nn.Linear(self.input_size, self.hidden_size1)
-        self.relu1 = nn.ReLU()
+        self.relu1 = nn.leaky_ReLU()
         self.dropout1 = nn.Dropout(p=dropout) if dropout else None
-
+        # Layer 2
         self.fc2 = nn.Linear(self.hidden_size1, self.hidden_size2)
-        self.relu2 = nn.ReLU()
+        self.relu2 = nn.leaky_ReLU
         self.dropout2 = nn.Dropout(p=dropout) if dropout else None
-
+        # Layer 3
         self.fc3 = nn.Linear(self.hidden_size2, self.hidden_size3)
-        self.relu3 = nn.ReLU()
+        self.relu3 = nn.leaky_ReLU
         self.dropout3 = nn.Dropout(p=dropout) if dropout else None
-
+        # Layer 4
         self.fc4 = nn.Linear(self.hidden_size3, self.hidden_size4)
-        self.relu4 = nn.ReLU()
+        self.relu4 = nn.leaky_ReLU()
         self.dropout4 = nn.Dropout(p=dropout) if dropout else None
-
+        # Layer 5
         self.fc5 = nn.Linear(self.hidden_size4, self.hidden_size5)
-        self.relu5 = nn.ReLU()
+        self.relu5 = nn.leaky_ReLU()
         self.dropout5 = nn.Dropout(p=dropout) if dropout else None
-
+        # Layer 6
         self.fc6 = nn.Linear(self.hidden_size5, self.hidden_size6)
-        self.relu6 = nn.ReLU()
+        self.relu6 = nn.leaky_ReLU()
         self.dropout6 = nn.Dropout(p=dropout) if dropout else None
-
+        # Output layer
         self.fc7 = nn.Linear(self.hidden_size6, self.output_size)
         self.softmax = nn.Softmax(dim=1)
     
     def forward(self, x):
+        # Input
         out = self.fc1(x)
         out = self.relu1(out)
         if self.dropout1: out = self.dropout1(out)
-
+        # Hidden layers
         out = self.fc2(out)
         out = self.relu2(out)
         if self.dropout2: out = self.dropout2(out)
