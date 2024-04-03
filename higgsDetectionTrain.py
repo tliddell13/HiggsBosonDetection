@@ -7,6 +7,7 @@ import torch.optim as optim
 import MLPfunctions as mlp
 import pandas as pd
 import numpy as np
+import importlib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
@@ -34,11 +35,11 @@ scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
 # Set aside some validation data
-X_val = X[:290000].values
+X_val = X[:290000]
 y_val = y[:290000].values
 
 # Remove the validation data from the dataset
-X = X[290000:].values
+X = X[290000:]
 y = y[290000:].values
 
 # Split the data into training and testing data
@@ -75,12 +76,12 @@ y_test = y_test.to(device)
 X_val = X_val.to(device)
 y_val = y_val.to(device)
 
-model4 = mlp.MLP_mach3(input_size, 400, 320, 240, 160, 80, 40, 0.1, patience=100)
+model4 = mlp.MLP_mach3(input_size, 300, 260, 220, 180, 140, 100, 0.1)
 model4.to(device)
 n_epochs = 6000
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model4.parameters(), lr=0.005)
-train_losses, test_losses = mlp.train_model(model4, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs)
+optimizer = optim.Adam(model4.parameters(), lr=0.002)
+train_losses, test_losses = mlp.train_model(model4, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
 # Evaluate the model using our function
 f1, acc, cm = mlp.getResults(train_losses, test_losses, model4, X_val, y_val)
 print(f"F1: {f1}")
