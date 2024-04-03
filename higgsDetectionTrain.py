@@ -76,7 +76,7 @@ y_test = y_test.to(device)
 X_val = X_val.to(device)
 y_val = y_val.to(device)
 
-model4 = mlp.MLP_mach3(input_size, 300, 260, 220, 180, 140, 100, dropout=.2)
+model4 = mlp.MLP_mach4(input_size, 300, 260, 220, 180, 140, 80, dropout=.2)
 model4.to(device)
 n_epochs = 6000
 criterion = nn.CrossEntropyLoss()
@@ -88,12 +88,12 @@ print(f"F1: {f1}")
 print(f"Accuracy: {acc}")
 print(f"Confusion Matrix: {cm}")
 # Save the model
-torch.save(model4.state_dict(), 'leaky_model4.pth')
+torch.save(model4.state_dict(), 'wi_model4.pth')
 # Save the training and testing losses as well  
-with open('leaky_train_losses.pkl', 'wb') as f:
+with open('wi_train_losses.pkl', 'wb') as f:
     pickle.dump(train_losses, f)
 
-with open('leaky_test_losses.pkl', 'wb') as f:
+with open('wi_test_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
 

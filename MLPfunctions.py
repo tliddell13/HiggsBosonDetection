@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.init as init
 import matplotlib.pyplot as plt
 from sklearn.metrics import f1_score, accuracy_score, confusion_matrix
 
@@ -116,6 +117,84 @@ class MLP_mach3(nn.Module):
         self.dropout6 = nn.Dropout(p=dropout) if dropout else None
         # Output layer
         self.fc7 = nn.Linear(self.hidden_size6, self.output_size)
+        self.softmax = nn.Softmax(dim=1)
+    
+    def forward(self, x):
+        # Input
+        out = self.fc1(x)
+        out = self.relu1(out)
+        if self.dropout1: out = self.dropout1(out)
+        # Hidden layers
+        out = self.fc2(out)
+        out = self.relu2(out)
+        if self.dropout2: out = self.dropout2(out)
+
+        out = self.fc3(out)
+        out = self.relu3(out)
+        if self.dropout3: out = self.dropout3(out)
+
+        out = self.fc4(out)
+        out = self.relu4(out)
+        if self.dropout4: out = self.dropout4(out)
+
+        out = self.fc5(out)
+        out = self.relu5(out)
+        if self.dropout5: out = self.dropout5(out)
+
+        out = self.fc6(out)
+        out = self.relu6(out)
+        if self.dropout6: out = self.dropout6(out)
+
+        out = self.fc7(out)
+        out = self.softmax(out)
+        return out
+    
+# Same thing as above just want to test out weight initialization alongside
+class MLP_mach4(nn.Module):
+    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None): # Dropout is optional
+        super(MLP_mach3, self).__init__()
+        # Set the sizes of the layers
+        self.input_size = input_size 
+        self.hidden_size1 = hidden1
+        self.hidden_size2 = hidden2
+        self.hidden_size3 = hidden3 
+        self.hidden_size4 = hidden4
+        self.hidden_size5 = hidden5
+        self.hidden_size6 = hidden6
+        self.output_size = 2  
+        # Input layer
+        self.fc1 = nn.Linear(self.input_size, self.hidden_size1)
+        init.xavier_uniform_(self.fc1.weight)
+        self.relu1 = nn.LeakyReLU()
+        self.dropout1 = nn.Dropout(p=dropout) if dropout else None
+        # Layer 2
+        self.fc2 = nn.Linear(self.hidden_size1, self.hidden_size2)
+        init.xavier_uniform_(self.fc2.weight)
+        self.relu2 = nn.LeakyReLU()
+        self.dropout2 = nn.Dropout(p=dropout) if dropout else None
+        # Layer 3
+        self.fc3 = nn.Linear(self.hidden_size2, self.hidden_size3)
+        init.xavier_uniform_(self.fc3.weight)
+        self.relu3 = nn.LeakyReLU()
+        self.dropout3 = nn.Dropout(p=dropout) if dropout else None
+        # Layer 4
+        self.fc4 = nn.Linear(self.hidden_size3, self.hidden_size4)
+        init.xavier_uniform_(self.fc4.weight)
+        self.relu4 = nn.LeakyReLU()
+        self.dropout4 = nn.Dropout(p=dropout) if dropout else None
+        # Layer 5
+        self.fc5 = nn.Linear(self.hidden_size4, self.hidden_size5)
+        init.xavier_uniform_(self.fc5.weight)
+        self.relu5 = nn.LeakyReLU()
+        self.dropout5 = nn.Dropout(p=dropout) if dropout else None
+        # Layer 6
+        self.fc6 = nn.Linear(self.hidden_size5, self.hidden_size6)
+        init.xavier_uniform_(self.fc6.weight)
+        self.relu6 = nn.LeakyReLU()
+        self.dropout6 = nn.Dropout(p=dropout) if dropout else None
+        # Output layer
+        self.fc7 = nn.Linear(self.hidden_size6, self.output_size)
+        init.xavier_uniform_(self.fc7.weight)
         self.softmax = nn.Softmax(dim=1)
     
     def forward(self, x):
