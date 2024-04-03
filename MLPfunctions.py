@@ -78,7 +78,7 @@ class MLP_mach2(nn.Module):
 # ending with 50 neurons in the last hidden layer. Trying a softmax activation function for the output layer
 # If it seems to work at all, will train on a gpu with a larger amount of the data
 class MLP_mach3(nn.Module):
-    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout):
+    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None):
         super(MLP_mach3, self).__init__()
         self.input_size = input_size 
         self.hidden_size1 = hidden1
@@ -91,58 +91,58 @@ class MLP_mach3(nn.Module):
 
         self.fc1 = nn.Linear(self.input_size, self.hidden_size1)
         self.relu1 = nn.ReLU()
-        self.dropout1 = nn.Dropout(p=dropout) 
+        self.dropout1 = nn.Dropout(p=dropout) if dropout else None
 
         self.fc2 = nn.Linear(self.hidden_size1, self.hidden_size2)
         self.relu2 = nn.ReLU()
-        self.dropout2 = nn.Dropout(p=dropout)
+        self.dropout2 = nn.Dropout(p=dropout) if dropout else None
 
         self.fc3 = nn.Linear(self.hidden_size2, self.hidden_size3)
         self.relu3 = nn.ReLU()
-        self.dropout3 = nn.Dropout(p=dropout)
+        self.dropout3 = nn.Dropout(p=dropout) if dropout else None
 
         self.fc4 = nn.Linear(self.hidden_size3, self.hidden_size4)
         self.relu4 = nn.ReLU()
-        self.dropout4 = nn.Dropout(p=dropout)
+        self.dropout4 = nn.Dropout(p=dropout) if dropout else None
 
         self.fc5 = nn.Linear(self.hidden_size4, self.hidden_size5)
         self.relu5 = nn.ReLU()
-        self.dropout5 = nn.Dropout(p=dropout)
+        self.dropout5 = nn.Dropout(p=dropout) if dropout else None
 
         self.fc6 = nn.Linear(self.hidden_size5, self.hidden_size6)
         self.relu6 = nn.ReLU()
-        self.dropout6 = nn.Dropout(p=dropout)
+        self.dropout6 = nn.Dropout(p=dropout) if dropout else None
 
         self.fc7 = nn.Linear(self.hidden_size6, self.output_size)
-        self.softmax = nn.Softmax(dim=1)
+        self.reluOp = nn.ReLU()
     
     def forward(self, x):
         out = self.fc1(x)
         out = self.relu1(out)
-        out = self.dropout1(out)
+        if self.dropout1: out = self.dropout1(out)
 
         out = self.fc2(out)
         out = self.relu2(out)
-        out = self.dropout2(out)
+        if self.dropout2: out = self.dropout2(out)
 
         out = self.fc3(out)
         out = self.relu3(out)
-        out = self.dropout3(out)
+        if self.dropout3: out = self.dropout3(out)
 
         out = self.fc4(out)
         out = self.relu4(out)
-        out = self.dropout4(out)
+        if self.dropout4: out = self.dropout4(out)
 
         out = self.fc5(out)
         out = self.relu5(out)
-        out = self.dropout5(out)
+        if self.dropout5: out = self.dropout5(out)
 
         out = self.fc6(out)
         out = self.relu6(out)
-        out = self.dropout6(out)
+        if self.dropout6: out = self.dropout6(out)
 
         out = self.fc7(out)
-        out = self.softmax(out)
+        out = self.reluOp(out)
         return out
     
 # Function to easily train the model. Can set the number of epochs, the criterion and the optimizer
