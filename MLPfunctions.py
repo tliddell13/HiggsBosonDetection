@@ -92,27 +92,27 @@ class MLP_mach3(nn.Module):
         self.output_size = 2  
         # Input layer
         self.fc1 = nn.Linear(self.input_size, self.hidden_size1)
-        self.relu1 = nn.leakyReLU()
+        self.relu1 = nn.LeakyReLU()
         self.dropout1 = nn.Dropout(p=dropout) if dropout else None
         # Layer 2
         self.fc2 = nn.Linear(self.hidden_size1, self.hidden_size2)
-        self.relu2 = nn.leakyReLU()
+        self.relu2 = nn.LeakyReLU()
         self.dropout2 = nn.Dropout(p=dropout) if dropout else None
         # Layer 3
         self.fc3 = nn.Linear(self.hidden_size2, self.hidden_size3)
-        self.relu3 = nn.leakyReLU()
+        self.relu3 = nn.LeakyReLU()
         self.dropout3 = nn.Dropout(p=dropout) if dropout else None
         # Layer 4
         self.fc4 = nn.Linear(self.hidden_size3, self.hidden_size4)
-        self.relu4 = nn.leakyReLU()
+        self.relu4 = nn.LeakyReLU()
         self.dropout4 = nn.Dropout(p=dropout) if dropout else None
         # Layer 5
         self.fc5 = nn.Linear(self.hidden_size4, self.hidden_size5)
-        self.relu5 = nn.leakyReLU()
+        self.relu5 = nn.LeakyReLU()
         self.dropout5 = nn.Dropout(p=dropout) if dropout else None
         # Layer 6
         self.fc6 = nn.Linear(self.hidden_size5, self.hidden_size6)
-        self.relu6 = nn.leakyReLU()
+        self.relu6 = nn.LeakyReLU()
         self.dropout6 = nn.Dropout(p=dropout) if dropout else None
         # Output layer
         self.fc7 = nn.Linear(self.hidden_size6, self.output_size)
