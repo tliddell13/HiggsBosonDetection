@@ -114,7 +114,7 @@ class MLP_mach3(nn.Module):
         self.dropout6 = nn.Dropout(p=dropout) if dropout else None
 
         self.fc7 = nn.Linear(self.hidden_size6, self.output_size)
-        self.reluOp = nn.ReLU()
+        self.softmax = nn.Softmax(dim=1)
     
     def forward(self, x):
         out = self.fc1(x)
@@ -142,7 +142,7 @@ class MLP_mach3(nn.Module):
         if self.dropout6: out = self.dropout6(out)
 
         out = self.fc7(out)
-        out = self.reluOp(out)
+        out = self.softmax(out)
         return out
     
 # Function to easily train the model. Can set the number of epochs, the criterion and the optimizer
