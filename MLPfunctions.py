@@ -152,7 +152,7 @@ class MLP_mach3(nn.Module):
 # Same thing as above just want to test out weight initialization alongside
 class MLP_mach4(nn.Module):
     def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None): # Dropout is optional
-        super(MLP_mach3, self).__init__()
+        super(MLP_mach4, self).__init__()
         # Set the sizes of the layers
         self.input_size = input_size 
         self.hidden_size1 = hidden1
