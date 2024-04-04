@@ -88,12 +88,12 @@ print(f"F1: {f1}")
 print(f"Accuracy: {acc}")
 print(f"Confusion Matrix: {cm}")
 # Save the model
-torch.save(model4.state_dict(), 'wi_model4.pth')
+torch.save(model4.state_dict(), 'wi_kai_model4.pth')
 # Save the training and testing losses as well  
-with open('wi_train_losses.pkl', 'wb') as f:
+with open('wi_kai_losses.pkl', 'wb') as f:
     pickle.dump(train_losses, f)
 
-with open('wi_test_losses.pkl', 'wb') as f:
+with open('wi__kaitest_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
 
