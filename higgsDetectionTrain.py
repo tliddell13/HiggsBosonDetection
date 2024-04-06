@@ -1,3 +1,4 @@
+# This file is formatted to train the MLP models using the GPU
 import torch
 import pickle
 import torch.nn as nn
@@ -78,13 +79,13 @@ y_val = y_val.to(device)
 # Model 1
 model1 = mlp.MLP_mach1(input_size, 30)
 model1.to(device)
-n_epochs = 2000
+n_epochs = 3000
 lr = 0.002
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model1.parameters(), lr=lr)
 # Measure the time it takes to train the model
 start = time.time()
-train_losses, test_losses = mlp.train_model(model1, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=500)
+train_losses, test_losses = mlp.train_model(model1, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
 end = time.time()
 print(f"Training time: {end - start}")
 # Evaluate the model using our function
@@ -130,7 +131,7 @@ with open('model2_test_losses.pkl', 'wb') as f:
 # Model 3
 model3 = mlp.MLP_mach3(input_size, 260, 200, 140, 100, 60, 20, dropout=.2)
 model3.to(device)
-n_epochs = 6000
+n_epochs = 3000
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model3.parameters(), lr=lr)
 # Measure the time it takes to train the model
@@ -156,7 +157,7 @@ with open('model3_test_losses.pkl', 'wb') as f:
 # Model 4
 model4 = mlp.MLP_mach4(input_size, 260, 200, 140, 100, 60, 20, dropout=.2)
 model4.to(device)
-n_epochs = 6000
+n_epochs = 3000
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model4.parameters(), lr=lr)
 # Measure the time it takes to train the model
@@ -181,7 +182,7 @@ with open('model4_test_losses.pkl', 'wb') as f:
 # Model 5
 model5 = mlp.MLP_mach5(input_size, 260, 200, 140, 100, 60, 20, dropout=.2)
 model5.to(device)
-n_epochs = 6000
+n_epochs = 3000
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model5.parameters(), lr=0.002)
 # Measure the time it takes to train the model
