@@ -382,64 +382,6 @@ def train_model(model, X_train, y_train, X_test, y_test, criterion, optimizer, n
 
     return train_losses, test_losses
 
-def train_model_dist(model, train_loader, test_loader, criterion, optimizer, n_epochs, patience=None):
-    train_losses = []
-    test_losses = []
-    best_loss = float('inf')
-    patience_counter = 0
-    if patience is not None:
-        early_stop = True
-    else:
-        early_stop = False
-
-    for epoch in range(n_epochs):
-        model.train()
-        train_loss = 0.0
-        for batch_X, batch_y in train_loader:
-            optimizer.zero_grad()
-            outputs = model(batch_X)
-            loss = criterion(outputs.squeeze(), batch_y)
-            loss.backward()
-            optimizer.step()
-            train_loss += loss.item()
-
-        # Gather train loss from all GPUs
-        train_loss = torch.tensor(train_loss).to(device)
-        dist.all_reduce(train_loss)
-        train_loss = train_loss.item() / dist.get_world_size()
-        train_losses.append(train_loss)
-
-        model.eval()
-        test_loss = 0.0
-        with torch.no_grad():
-            for batch_X, batch_y in test_loader:
-                outputs = model(batch_X)
-                loss = criterion(outputs.squeeze(), batch_y)
-                test_loss += loss.item()
-
-        # Gather test loss from all GPUs
-        test_loss = torch.tensor(test_loss).to(device)
-        dist.all_reduce(test_loss)
-        test_loss = test_loss.item() / dist.get_world_size()
-        test_losses.append(test_loss)
-
-        if dist.get_rank() == 0:
-            print(f'Epoch {epoch+1}/{n_epochs}, Train Loss: {train_losses[-1]}, Test Loss: {test_losses[-1]}')
-
-        # Early stopping condition
-        if early_stop:
-            if test_losses[-1] < best_loss:
-                best_loss = test_losses[-1]
-                patience_counter = 0
-            else:
-                patience_counter += 1
-            if patience_counter >= patience:
-                if dist.get_rank() == 0:
-                    print(f'Early stopping at epoch {epoch+1}')
-                break
-
-    return train_losses, test_losses
-
 # This function plots the training and test losses, and returns f1 score, accuracy and confusion matrix
 def getResults(train_losses, test_losses, model, X_test, y_test):
     plt.plot(train_losses, label='Train Loss')

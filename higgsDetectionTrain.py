@@ -84,7 +84,7 @@ model5.to(device)
 n_epochs = 6000
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model5.parameters(), lr=0.002)
-train_losses, test_losses = mlp.train_model_dist(model5, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
+train_losses, test_losses = mlp.train_model(model5, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
 # Evaluate the model using our function
 f1, acc, cm = mlp.getResults(train_losses, test_losses, model5, X_val, y_val)
 print(f"F1: {f1}")
