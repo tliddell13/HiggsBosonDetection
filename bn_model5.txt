@@ -1,0 +1,153 @@
+[38;5;127mlibs[0m/[38;5;172mnvidia-cuda[0m/[38;5;67m11.2.0[0m/[38;5;68mbin[0m
+ |
+ [0;32mOK[0m
+Sat Apr  6 15:56:13 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.154.05             Driver Version: 535.154.05   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100-PCIE-40GB          Off | 00000000:49:00.0 Off |                    0 |
+| N/A   30C    P0              34W / 250W |      0MiB / 40960MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100-PCIE-40GB          Off | 00000000:89:00.0 Off |                    0 |
+| N/A   29C    P0              34W / 250W |      0MiB / 40960MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/distributed/launch.py:183: FutureWarning: The module torch.distributed.launch is deprecated
+and will be removed in future. Use torchrun.
+Note that --use-env is set by default in torchrun.
+If your script expects `--local-rank` argument to be set, please
+change it to read from `os.environ['LOCAL_RANK']` instead. See 
+https://pytorch.org/docs/stable/distributed.html#launch-utility for 
+further instructions
+
+  warnings.warn(
+[2024-04-06 15:56:16,321] torch.distributed.run: [WARNING] 
+[2024-04-06 15:56:16,321] torch.distributed.run: [WARNING] *****************************************
+[2024-04-06 15:56:16,321] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-04-06 15:56:16,321] torch.distributed.run: [WARNING] *****************************************
+Sizes:
+Training
+(2091200, 34)
+Testing
+(522800, 34)
+Validation
+(290000, 34)
+Sizes:
+Training
+(2091200, 34)
+Testing
+(522800, 34)
+Validation
+(290000, 34)
+Device: cuda
+Device: cuda
+Traceback (most recent call last):
+  File "/users/adbt150/HiggsBosonDetectionCopy/HiggsBosonDetection/higgsDetectionTrain.py", line 84, in <module>
+    train_losses, test_losses = mlp.train_model(model5, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/HiggsBosonDetectionCopy/HiggsBosonDetection/MLPfunctions.py", line 359, in train_model
+    y_pred = model(X_train)
+             ^^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/HiggsBosonDetectionCopy/HiggsBosonDetection/MLPfunctions.py", line 322, in forward
+    out = self.bn5(out)
+          ^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/batchnorm.py", line 175, in forward
+Traceback (most recent call last):
+  File "/users/adbt150/HiggsBosonDetectionCopy/HiggsBosonDetection/higgsDetectionTrain.py", line 84, in <module>
+    train_losses, test_losses = mlp.train_model(model5, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/HiggsBosonDetectionCopy/HiggsBosonDetection/MLPfunctions.py", line 359, in train_model
+    y_pred = model(X_train)
+             ^^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/HiggsBosonDetectionCopy/HiggsBosonDetection/MLPfunctions.py", line 304, in forward
+    out = self.bn2(out)
+          ^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/modules/batchnorm.py", line 175, in forward
+        return F.batch_norm(return F.batch_norm(
+
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/functional.py", line 2482, in batch_norm
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/nn/functional.py", line 2482, in batch_norm
+    return torch.batch_norm(
+           ^^^^^^^^^^^^^^^^^
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.03 GiB. GPU 0 has a total capacity of 39.39 GiB of which 1016.75 MiB is free. Including non-PyTorch memory, this process has 10.83 GiB memory in use. Process 168995 has 27.55 GiB memory in use. Of the allocated memory 10.02 GiB is allocated by PyTorch, and 328.39 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+    return torch.batch_norm(
+           ^^^^^^^^^^^^^^^^^
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 1.09 GiB. GPU 0 has a total capacity of 39.39 GiB of which 1016.75 MiB is free. Process 168996 has 10.83 GiB memory in use. Including non-PyTorch memory, this process has 27.55 GiB memory in use. Of the allocated memory 25.80 GiB is allocated by PyTorch, and 1.27 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2024-04-06 15:57:26,342] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 168995) of binary: /users/adbt150/archive/miniconda3/envs/llmTranslate/bin/python
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/distributed/launch.py", line 198, in <module>
+    main()
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/distributed/launch.py", line 194, in main
+    launch(args)
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/distributed/launch.py", line 179, in launch
+    run(args)
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/distributed/run.py", line 803, in run
+    elastic_launch(
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 135, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/adbt150/archive/miniconda3/envs/llmTranslate/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 268, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/users/adbt150/HiggsBosonDetectionCopy/HiggsBosonDetection/higgsDetectionTrain.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2024-04-06_15:57:26
+  host      : gpu02.pri.hyperion.alces.network
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 168996)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-04-06_15:57:26
+  host      : gpu02.pri.hyperion.alces.network
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 168995)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
