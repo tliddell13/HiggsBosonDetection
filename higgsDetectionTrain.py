@@ -76,24 +76,24 @@ y_test = y_test.to(device)
 X_val = X_val.to(device)
 y_val = y_val.to(device)
 
-model4 = mlp.MLP_mach4(input_size, 300, 260, 220, 180, 140, 80, dropout=.2)
-model4.to(device)
+model5 = mlp.MLP_mach5(input_size, 300, 260, 220, 180, 140, 80, dropout=.2)
+model5.to(device)
 n_epochs = 6000
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model4.parameters(), lr=0.002)
-train_losses, test_losses = mlp.train_model(model4, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
+optimizer = optim.Adam(model5.parameters(), lr=0.002)
+train_losses, test_losses = mlp.train_model(model5, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
 # Evaluate the model using our function
-f1, acc, cm = mlp.getResults(train_losses, test_losses, model4, X_val, y_val)
+f1, acc, cm = mlp.getResults(train_losses, test_losses, model5, X_val, y_val)
 print(f"F1: {f1}")
 print(f"Accuracy: {acc}")
 print(f"Confusion Matrix: {cm}")
 # Save the model
-torch.save(model4.state_dict(), 'wi_kai_model4.pth')
+torch.save(model5.state_dict(), 'bn_model5.pth')
 # Save the training and testing losses as well  
-with open('wi_kai_losses.pkl', 'wb') as f:
+with open('bn_losses.pkl', 'wb') as f:
     pickle.dump(train_losses, f)
 
-with open('wi__kaitest_losses.pkl', 'wb') as f:
+with open('bn_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
 

@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.init as init
 import matplotlib.pyplot as plt
 from sklearn.metrics import f1_score, accuracy_score, confusion_matrix
+from sklearn.model_selection import GridSearchCV
 
 # First attempt at a MLP model
 # Has 2 hidden layers and uses ReLU activation function and softmax for output
@@ -245,6 +246,96 @@ class MLP_mach4(nn.Module):
         out = self.softmax(out)
 
         return out
+    
+class MLP_mach5(nn.Module):
+    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None):
+        super(MLP_mach5, self).__init__()
+        
+        self.input_size = input_size
+        self.hidden_size1 = hidden1
+        self.hidden_size2 = hidden2
+        self.hidden_size3 = hidden3
+        self.hidden_size4 = hidden4
+        self.hidden_size5 = hidden5
+        self.hidden_size6 = hidden6
+        self.output_size = 2
+        
+        self.fc1 = nn.Linear(self.input_size, self.hidden_size1)
+        self.bn1 = nn.BatchNorm1d(self.hidden_size1)
+        self.relu1 = nn.LeakyReLU()
+        self.dropout1 = nn.Dropout(p=dropout) if dropout else None
+        
+        self.fc2 = nn.Linear(self.hidden_size1, self.hidden_size2)
+        self.bn2 = nn.BatchNorm1d(self.hidden_size2)
+        self.relu2 = nn.LeakyReLU()
+        self.dropout2 = nn.Dropout(p=dropout) if dropout else None
+        
+        self.fc3 = nn.Linear(self.hidden_size2, self.hidden_size3)
+        self.bn3 = nn.BatchNorm1d(self.hidden_size3)
+        self.relu3 = nn.LeakyReLU()
+        self.dropout3 = nn.Dropout(p=dropout) if dropout else None
+        
+        self.fc4 = nn.Linear(self.hidden_size3, self.hidden_size4)
+        self.bn4 = nn.BatchNorm1d(self.hidden_size4)
+        self.relu4 = nn.LeakyReLU()
+        self.dropout4 = nn.Dropout(p=dropout) if dropout else None
+        
+        self.fc5 = nn.Linear(self.hidden_size4, self.hidden_size5)
+        self.bn5 = nn.BatchNorm1d(self.hidden_size5)
+        self.relu5 = nn.LeakyReLU()
+        self.dropout5 = nn.Dropout(p=dropout) if dropout else None
+        
+        self.fc6 = nn.Linear(self.hidden_size5, self.hidden_size6)
+        self.bn6 = nn.BatchNorm1d(self.hidden_size6)
+        self.relu6 = nn.LeakyReLU()
+        self.dropout6 = nn.Dropout(p=dropout) if dropout else None
+        
+        self.fc7 = nn.Linear(self.hidden_size6, self.output_size)
+        self.softmax = nn.Softmax(dim=1)
+    
+    def forward(self, x):
+        out = self.fc1(x)
+        out = self.bn1(out)
+        out = self.relu1(out)
+        if self.dropout1:
+            out = self.dropout1(out)
+        
+        out = self.fc2(out)
+        out = self.bn2(out)
+        out = self.relu2(out)
+        if self.dropout2:
+            out = self.dropout2(out)
+        
+        out = self.fc3(out)
+        out = self.bn3(out)
+        out = self.relu3(out)
+        if self.dropout3:
+            out = self.dropout3(out)
+        
+        out = self.fc4(out)
+        out = self.bn4(out)
+        out = self.relu4(out)
+        if self.dropout4:
+            out = self.dropout4(out)
+        
+        out = self.fc5(out)
+        out = self.bn5(out)
+        out = self.relu5(out)
+        if self.dropout5:
+            out = self.dropout5(out)
+        
+        out = self.fc6(out)
+        out = self.bn6(out)
+        out = self.relu6(out)
+        if self.dropout6:
+            out = self.dropout6(out)
+        
+        out = self.fc7(out)
+        out = self.softmax(out)
+        
+        return out
+
+    
     
 # Function to easily train the model. Can set the number of epochs, the criterion and the optimizer
 def train_model(model, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs, patience=None):
