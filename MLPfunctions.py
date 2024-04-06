@@ -261,36 +261,43 @@ class MLP_mach5(nn.Module):
         self.output_size = 2
         
         self.fc1 = nn.Linear(self.input_size, self.hidden_size1)
+        init.kaiming_uniform_(self.fc1.weight)
         self.bn1 = nn.BatchNorm1d(self.hidden_size1)
-        self.relu1 = nn.LeakyReLU()
+        self.relu1 = nn.ReLU()
         self.dropout1 = nn.Dropout(p=dropout) if dropout else None
         
         self.fc2 = nn.Linear(self.hidden_size1, self.hidden_size2)
+        init.kaiming_uniform_(self.fc2.weight)
         self.bn2 = nn.BatchNorm1d(self.hidden_size2)
-        self.relu2 = nn.LeakyReLU()
+        self.relu2 = nn.ReLU()
         self.dropout2 = nn.Dropout(p=dropout) if dropout else None
         
         self.fc3 = nn.Linear(self.hidden_size2, self.hidden_size3)
+        init.kaiming_uniform_(self.fc3.weight)
         self.bn3 = nn.BatchNorm1d(self.hidden_size3)
-        self.relu3 = nn.LeakyReLU()
+        self.relu3 = nn.ReLU()
         self.dropout3 = nn.Dropout(p=dropout) if dropout else None
         
         self.fc4 = nn.Linear(self.hidden_size3, self.hidden_size4)
+        init.kaiming_uniform_(self.fc4.weight)
         self.bn4 = nn.BatchNorm1d(self.hidden_size4)
-        self.relu4 = nn.LeakyReLU()
+        self.relu4 = nn.ReLU()
         self.dropout4 = nn.Dropout(p=dropout) if dropout else None
         
         self.fc5 = nn.Linear(self.hidden_size4, self.hidden_size5)
+        init.kaiming_uniform_(self.fc5.weight)
         self.bn5 = nn.BatchNorm1d(self.hidden_size5)
-        self.relu5 = nn.LeakyReLU()
+        self.relu5 = nn.ReLU()
         self.dropout5 = nn.Dropout(p=dropout) if dropout else None
         
         self.fc6 = nn.Linear(self.hidden_size5, self.hidden_size6)
+        init.kaiming_uniform_(self.fc6.weight)
         self.bn6 = nn.BatchNorm1d(self.hidden_size6)
-        self.relu6 = nn.LeakyReLU()
+        self.relu6 = nn.ReLU()
         self.dropout6 = nn.Dropout(p=dropout) if dropout else None
         
         self.fc7 = nn.Linear(self.hidden_size6, self.output_size)
+        init.kaiming_uniform_(self.fc7.weight)
         self.softmax = nn.Softmax(dim=1)
     
     def forward(self, x):
