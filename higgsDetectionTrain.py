@@ -4,12 +4,23 @@ import torch
 import pickle
 import torch.nn as nn
 import torch.optim as optim
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data.distributed import DistributedSampler
 import MLPfunctions as mlp
 import pandas as pd
 import numpy as np
 import importlib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+
+# Initialize the distributed environment
+dist.init_process_group(backend='nccl')
+
+# Set the device to the current GPU
+local_rank = dist.get_rank()
+device = torch.device(f'cuda:{local_rank}')
 
 # Load the data
 dataset = pd.read_csv('HIGGS_train.csv')
@@ -78,10 +89,12 @@ y_val = y_val.to(device)
 
 model5 = mlp.MLP_mach5(input_size, 300, 260, 220, 180, 140, 80, dropout=.2)
 model5.to(device)
+model5 = DDP(model5, device_ids=[local_rank])
+
 n_epochs = 6000
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model5.parameters(), lr=0.002)
-train_losses, test_losses = mlp.train_model(model5, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
+train_losses, test_losses = mlp.train_model_dist(model5, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
 # Evaluate the model using our function
 f1, acc, cm = mlp.getResults(train_losses, test_losses, model5, X_val, y_val)
 print(f"F1: {f1}")
