@@ -13,7 +13,7 @@ from sklearn.preprocessing import StandardScaler
 
 # Load the data
 dataset = pd.read_csv('HIGGS_train.csv')
-dataset = dataset.sample(frac=0.09)
+dataset = dataset.sample(frac=0.33)
 # This time I am going to use cyclic feature encoding on the angular features and scaling all the features
 # I discuss this more in the data manip ipynb
 angular_feats = ['lepton phi', 'missing energy phi', 'jet 1 phi', 'jet 2 phi', 'jet 3 phi', 'jet 4 phi']
@@ -132,7 +132,6 @@ with open('model2_test_losses.pkl', 'wb') as f:
 model3 = mlp.MLP_mach3(input_size, 260, 200, 140, 100, 60, 20, dropout=.2)
 model3.to(device)
 criterion = nn.CrossEntropyLoss()
-lr = .001
 optimizer = optim.Adam(model3.parameters(), lr=lr)
 # Measure the time it takes to train the model
 start = time.time()
