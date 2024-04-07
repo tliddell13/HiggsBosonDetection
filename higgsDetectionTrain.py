@@ -183,7 +183,10 @@ model5.to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model5.parameters(), lr=0.002)
 # Measure the time it takes to train the model
+start = time.time()
 train_losses, test_losses = mlp.train_model(model5, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
+end = time.time()
+print(f"Training time: {end - start}")
 # Evaluate the model using our function
 f1, acc, cm = mlp.getResults(train_losses, test_losses, model5, X_val, y_val)
 print(f"F1: {f1}")
