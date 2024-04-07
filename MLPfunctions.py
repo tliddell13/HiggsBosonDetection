@@ -256,6 +256,7 @@ class MLP_mach5(nn.Module):
         self.hidden_size4 = hidden4
         self.hidden_size5 = hidden5
         self.hidden_size6 = hidden6
+        self.hidden_size7 = hidden7
         self.output_size = 2
         
         # Layer 1
@@ -301,14 +302,14 @@ class MLP_mach5(nn.Module):
         self.dropout6 = nn.Dropout(p=dropout) if dropout else None
 
         # Layer 7
-        self.fc7 = nn.Linear(self.hidden_size6, hidden7)
+        self.fc7 = nn.Linear(self.hidden_size6, self.hidden_size7)
         init.kaiming_uniform_(self.fc7.weight)
         self.bn7 = nn.BatchNorm1d(hidden7)
         self.relu7 = nn.ReLU()
         self.dropout7 = nn.Dropout(p=dropout) if dropout else None
         
         # Output layer
-        self.fc8 = nn.Linear(self.hidden_size6, self.output_size)
+        self.fc8 = nn.Linear(self.hidden_size7, self.output_size)
         init.kaiming_uniform_(self.fc8.weight)
         self.softmax = nn.Softmax(dim=1)
     
