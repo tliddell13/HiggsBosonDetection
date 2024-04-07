@@ -14,8 +14,9 @@ from sklearn.preprocessing import StandardScaler
 # Load the data
 dataset = pd.read_csv('HIGGS_train.csv')
 # Take about a third of the data (a couple million rows)
-dataset = dataset.sample(frac=0.33)
+dataset = dataset.sample(frac=0.9)
 # This time I am going to use cyclic feature encoding on the angular features and scaling all the features
+# I discuss this more in the data manip ipynb
 angular_feats = ['lepton phi', 'missing energy phi', 'jet 1 phi', 'jet 2 phi', 'jet 3 phi', 'jet 4 phi']
 X = dataset.iloc[:, 1:]
 y = dataset.iloc[:, 0]
@@ -27,10 +28,10 @@ for feat in angular_feats:
     X = X.assign(**{sin: np.sin(X[feat] * np.pi / 180)})
     X = X.assign(**{cos: np.cos(X[feat] * np.pi / 180)})
 
-# Drop the original features
+# Drop the original angle features
 X = X.drop(angular_feats, axis=1)
 
-# Scale the data
+# Use the scaler to scale the data
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
@@ -66,7 +67,7 @@ y_val = torch.tensor(y_val, dtype=torch.long)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}')
 
-input_size = X_train.shape[1]
+input_size = X_train.shape[1] # Number of features
 
 # Set the tensors to the device
 X_train = X_train.to(device)
@@ -76,7 +77,8 @@ y_test = y_test.to(device)
 X_val = X_val.to(device)
 y_val = y_val.to(device)
 
-# Model 1
+# Below I test out 5 different models with different architectures. Refer to the MLPfunctions.py file for the definitions.
+# Model 1 
 model1 = mlp.MLP_mach1(input_size, 30)
 model1.to(device)
 n_epochs = 3000
@@ -155,7 +157,7 @@ with open('model3_test_losses.pkl', 'wb') as f:
 
 
 # Model 4
-model4 = mlp.MLP_mach4(input_size, 260, 200, 140, 100, 60, 20, dropout=.2)
+model4 = mlp.MLP_mach4(input_size, 300, 250, 200, 150, 100, 50, dropout=.2)
 model4.to(device)
 n_epochs = 3000
 criterion = nn.CrossEntropyLoss()
@@ -180,7 +182,7 @@ with open('model4_test_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
 # Model 5
-model5 = mlp.MLP_mach5(input_size, 260, 200, 140, 100, 60, 20, dropout=.2)
+model5 = mlp.MLP_mach5(input_size, 300, 260, 220, 180, 140, 100, 60, dropout=.2)
 model5.to(device)
 n_epochs = 3000
 criterion = nn.CrossEntropyLoss()

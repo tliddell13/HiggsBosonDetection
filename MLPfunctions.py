@@ -1,12 +1,13 @@
+# Class definitions for the MLP models. 
 import torch
 import torch.nn as nn
 import torch.nn.init as init
 import matplotlib.pyplot as plt
 from sklearn.metrics import f1_score, accuracy_score, confusion_matrix
-from sklearn.model_selection import GridSearchCV
 
-# First attempt at a MLP model
+# First simple MLP model
 # Has 2 hidden layers and uses ReLU activation function and softmax for output
+# During testing, quickly found that ReLU is the best activation function for hidden layers
 class MLP_mach1(nn.Module):
     def __init__(self, input_size, hidden_size):
         super(MLP_mach1, self).__init__()
@@ -25,8 +26,9 @@ class MLP_mach1(nn.Module):
         output = self.softmax(hidden)  # Apply softmax to the final output
         return output
 
-# Second attempt at a MLP model
-# Has 4 hidden layers and uses dropout.
+# Second more complex model
+# Has 4 hidden layers and uses dropout. Dropout is a regularization technique that helps prevent overfitting. 
+# Found that when dropout is not included in the model, the model overfits the training data
 # The dropout rate can be set when creating the model as well as the number of neurons in each hidden layer
 class MLP_mach2(nn.Module):
     def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, dropout):
@@ -37,23 +39,23 @@ class MLP_mach2(nn.Module):
         self.hidden_size3 = hidden3
         self.hidden_size4 = hidden4
         self.output_size = 2  
-
+        # Input layer
         self.fc1 = nn.Linear(self.input_size, self.hidden_size1)
         self.relu1 = nn.ReLU()
         self.dropout1 = nn.Dropout(p=dropout) 
-
+        # Hidden layer 1
         self.fc2 = nn.Linear(self.hidden_size1, self.hidden_size2)
         self.relu2 = nn.ReLU()
         self.dropout2 = nn.Dropout(p=dropout)
-
+        # Hidden layer 2
         self.fc3 = nn.Linear(self.hidden_size2, self.hidden_size3)
         self.relu3 = nn.ReLU()
         self.dropout3 = nn.Dropout(p=dropout)
-
+        # Hidden layer 3
         self.fc4 = nn.Linear(self.hidden_size3, self.hidden_size4)
         self.relu4 = nn.ReLU()
         self.dropout4 = nn.Dropout(p=dropout)
-
+        # Output layer
         self.fc5 = nn.Linear(self.hidden_size4, self.output_size)
 
     def forward(self, x):
@@ -76,12 +78,10 @@ class MLP_mach2(nn.Module):
         out = self.fc5(out)
         return out
     
-# Bigger model with 6 hidden layers. Going to start with the hidden neurons set to 300 and drop by 50 each layer
-# ending with 50 neurons in the last hidden layer. Trying a softmax activation function for the output layer
-# If it seems to work at all, will train on a gpu with a larger amount of the data
-# Found that using ReLU for activation in each layer is the best
+# Bigger model with 6 hidden layers. 
+# Uses leaky ReLU activation function. Leaky ReLU is similar to ReLU but allows a small gradient when the input is negative.
 class MLP_mach3(nn.Module):
-    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None): # Dropout is optional
+    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None): 
         super(MLP_mach3, self).__init__()
         # Set the sizes of the layers
         self.input_size = input_size 
@@ -150,13 +150,9 @@ class MLP_mach3(nn.Module):
         out = self.softmax(out)
         return out
     
-# Same thing as above just want to test out weight initialization alongside
-import torch.nn as nn
-import torch.nn.init as init
-
+# This model is the same as above, with the exception of using weigh initialization
 class MLP_mach4(nn.Module):
     def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None):
-        # Dropout is optional
         super(MLP_mach4, self).__init__()
         # Set the sizes of the layers
         self.input_size = input_size
@@ -247,10 +243,12 @@ class MLP_mach4(nn.Module):
 
         return out
     
+# 7 hidden layers with batch normalization
 class MLP_mach5(nn.Module):
-    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, dropout=None):
+    def __init__(self, input_size, hidden1, hidden2, hidden3, hidden4, hidden5, hidden6, hidden7, dropout=None):
         super(MLP_mach5, self).__init__()
         
+        # Set the sizes of the layers
         self.input_size = input_size
         self.hidden_size1 = hidden1
         self.hidden_size2 = hidden2
@@ -260,44 +258,58 @@ class MLP_mach5(nn.Module):
         self.hidden_size6 = hidden6
         self.output_size = 2
         
+        # Layer 1
         self.fc1 = nn.Linear(self.input_size, self.hidden_size1)
         init.kaiming_uniform_(self.fc1.weight)
         self.bn1 = nn.BatchNorm1d(self.hidden_size1)
         self.relu1 = nn.ReLU()
         self.dropout1 = nn.Dropout(p=dropout) if dropout else None
         
+        # Layer 2
         self.fc2 = nn.Linear(self.hidden_size1, self.hidden_size2)
         init.kaiming_uniform_(self.fc2.weight)
         self.bn2 = nn.BatchNorm1d(self.hidden_size2)
         self.relu2 = nn.ReLU()
         self.dropout2 = nn.Dropout(p=dropout) if dropout else None
         
+        # Layer 3
         self.fc3 = nn.Linear(self.hidden_size2, self.hidden_size3)
         init.kaiming_uniform_(self.fc3.weight)
         self.bn3 = nn.BatchNorm1d(self.hidden_size3)
         self.relu3 = nn.ReLU()
         self.dropout3 = nn.Dropout(p=dropout) if dropout else None
         
+        # Layer 4
         self.fc4 = nn.Linear(self.hidden_size3, self.hidden_size4)
         init.kaiming_uniform_(self.fc4.weight)
         self.bn4 = nn.BatchNorm1d(self.hidden_size4)
         self.relu4 = nn.ReLU()
         self.dropout4 = nn.Dropout(p=dropout) if dropout else None
         
+        # Layer 5
         self.fc5 = nn.Linear(self.hidden_size4, self.hidden_size5)
         init.kaiming_uniform_(self.fc5.weight)
         self.bn5 = nn.BatchNorm1d(self.hidden_size5)
         self.relu5 = nn.ReLU()
         self.dropout5 = nn.Dropout(p=dropout) if dropout else None
         
+        # Layer 6
         self.fc6 = nn.Linear(self.hidden_size5, self.hidden_size6)
         init.kaiming_uniform_(self.fc6.weight)
         self.bn6 = nn.BatchNorm1d(self.hidden_size6)
         self.relu6 = nn.ReLU()
         self.dropout6 = nn.Dropout(p=dropout) if dropout else None
-        
-        self.fc7 = nn.Linear(self.hidden_size6, self.output_size)
+
+        # Layer 7
+        self.fc7 = nn.Linear(self.hidden_size6, hidden7)
         init.kaiming_uniform_(self.fc7.weight)
+        self.bn7 = nn.BatchNorm1d(hidden7)
+        self.relu7 = nn.ReLU()
+        self.dropout7 = nn.Dropout(p=dropout) if dropout else None
+        
+        # Output layer
+        self.fc8 = nn.Linear(self.hidden_size6, self.output_size)
+        init.kaiming_uniform_(self.fc8.weight)
         self.softmax = nn.Softmax(dim=1)
     
     def forward(self, x):
@@ -336,8 +348,14 @@ class MLP_mach5(nn.Module):
         out = self.relu6(out)
         if self.dropout6:
             out = self.dropout6(out)
-        
+
         out = self.fc7(out)
+        out = self.bn7(out)
+        out = self.relu7(out)
+        if self.dropout7:
+            out = self.dropout7(out)
+        
+        out = self.fc8(out)
         out = self.softmax(out)
         
         return out
@@ -352,14 +370,14 @@ def train_model(model, X_train, y_train, X_test, y_test, criterion, optimizer, n
     best_loss = float('inf') 
 
     patience_counter = 0 
-    
+    # If patience is set turn on early stopping
     if patience is not None:
         early_stop = True  
     else:
         early_stop = False  
 
     for epoch in range(n_epochs):
-        model.train()
+        model.train() # Set the model to training mode
         # Forward pass
         # Set the gradients to zero
         optimizer.zero_grad()
@@ -382,7 +400,6 @@ def train_model(model, X_train, y_train, X_test, y_test, criterion, optimizer, n
                 patience_counter = 0
             else:
                 patience_counter += 1
-
             if patience_counter >= patience:
                 print(f'Early stopping at epoch {epoch+1}')
                 break
