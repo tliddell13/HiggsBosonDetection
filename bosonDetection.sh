@@ -2,7 +2,7 @@
 #SBATCH --ntasks-per-node=1                        # Run one task
 #SBATCH --partition=gengpu                       # Select the correct partition.                              # Run on 1 nodes (each node has 48 cores)
 #SBATCH --ntasks-per-node=1                      # Use 8 cores, most of the procesing happens on the GPU
-#SBATCH --mem=47GB                                  # Expected ammount CPU RAM needed (Not GPU Memory)
+#SBATCH --mem=20GB                                  # Expected ammount CPU RAM needed (Not GPU Memory)
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=6                          # Use 4 cores, most of the procesing happens on the GPU
 #SBATCH --time=64:00:00 
