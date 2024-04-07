@@ -13,8 +13,7 @@ from sklearn.preprocessing import StandardScaler
 
 # Load the data
 dataset = pd.read_csv('HIGGS_train.csv')
-# Take about a third of the data (a couple million rows)
-dataset = dataset.sample(frac=0.9)
+dataset = dataset.sample(frac=0.09)
 # This time I am going to use cyclic feature encoding on the angular features and scaling all the features
 # I discuss this more in the data manip ipynb
 angular_feats = ['lepton phi', 'missing energy phi', 'jet 1 phi', 'jet 2 phi', 'jet 3 phi', 'jet 4 phi']
