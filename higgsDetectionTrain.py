@@ -81,7 +81,7 @@ y_val = y_val.to(device)
 model1 = mlp.MLP_mach1(input_size, 30)
 model1.to(device)
 n_epochs = 4000
-lr = 0.002
+lr = 0.0098
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model1.parameters(), lr=lr)
 # Measure the time it takes to train the model
@@ -181,7 +181,7 @@ with open('model4_test_losses.pkl', 'wb') as f:
 model5 = mlp.MLP_mach5(input_size, 300, 260, 220, 180, 140, 100, 60, dropout=.2)
 model5.to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model5.parameters(), lr=0.002)
+optimizer = optim.Adam(model5.parameters(), lr=lr)
 # Measure the time it takes to train the model
 start = time.time()
 train_losses, test_losses = mlp.train_model(model5, X_train, y_train, X_test, y_test, criterion, optimizer, n_epochs,patience=800)
