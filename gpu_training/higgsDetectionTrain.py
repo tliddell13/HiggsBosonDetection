@@ -3,10 +3,13 @@ import torch
 import pickle
 import torch.nn as nn
 import torch.optim as optim 
+import sys 
+sys.path.append('..')
 import MLPfunctions as mlp
 import pandas as pd
 import numpy as np
 import time
+from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
@@ -200,6 +203,7 @@ with open('model5_train_losses.pkl', 'wb') as f:
 
 with open('model5_test_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
+
 
 
 
