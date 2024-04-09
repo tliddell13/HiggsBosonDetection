@@ -27,7 +27,7 @@ class MLP_mach1(nn.Module):
         return output
 
 # Second more complex model
-# Has 4 hidden layers and uses dropout. Dropout is a regularization technique that helps prevent overfitting. 
+# Has 3 hidden layers and uses dropout. Dropout is a regularization technique that helps prevent overfitting. 
 # Found that when dropout is not included in the model, the model overfits the training data
 # The dropout rate can be set when creating the model as well as the number of neurons in each hidden layer
 class MLP_mach2(nn.Module):
