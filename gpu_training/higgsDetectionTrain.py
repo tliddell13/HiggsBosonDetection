@@ -100,10 +100,10 @@ print(f"Confusion Matrix: {cm}")
 # Save the model
 torch.save(model1.state_dict(), 'model1.pth')
 # Save the training and testing losses as well
-with open('model1_train_losses.pkl', 'wb') as f:
+with open('model1_nocyclic_train_losses.pkl', 'wb') as f:
     pickle.dump(train_losses, f)
 
-with open('model1_test_losses.pkl', 'wb') as f:
+with open('model1_nocyclic_test_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
 
@@ -123,12 +123,12 @@ print(f"F1: {f1}")
 print(f"Accuracy: {acc}")
 print(f"Confusion Matrix: {cm}")
 # Save the model
-torch.save(model2.state_dict(), 'model2.pth')
+torch.save(model2.state_dict(), 'model2_nocyclic.pth')
 # Save the training and testing losses as well
-with open('model2_train_losses.pkl', 'wb') as f:
+with open('model2_nocyclic_train_losses.pkl', 'wb') as f:
     pickle.dump(train_losses, f)
 
-with open('model2_test_losses.pkl', 'wb') as f:
+with open('model2_nocyclic_test_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
 # Model 3
@@ -147,12 +147,12 @@ print(f"F1: {f1}")
 print(f"Accuracy: {acc}")
 print(f"Confusion Matrix: {cm}")
 # Save the model
-torch.save(model3.state_dict(), 'model3.pth')
+torch.save(model3.state_dict(), 'model3_nocyclic.pth')
 # Save the training and testing losses as well
-with open('model3_train_losses.pkl', 'wb') as f:
+with open('model3_nocyclic_train_losses.pkl', 'wb') as f:
     pickle.dump(train_losses, f)
 
-with open('model3_test_losses.pkl', 'wb') as f:
+with open('model3_nocyclic_test_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
 
@@ -172,12 +172,12 @@ print(f"F1: {f1}")
 print(f"Accuracy: {acc}")
 print(f"Confusion Matrix: {cm}")
 # Save the model
-torch.save(model4.state_dict(), 'model4.pth')
+torch.save(model4.state_dict(), 'model4_nocyclic.pth')
 # Save the training and testing losses as well
-with open('model4_train_losses.pkl', 'wb') as f:
+with open('model4_nocyclic_train_losses.pkl', 'wb') as f:
     pickle.dump(train_losses, f)
 
-with open('model4_test_losses.pkl', 'wb') as f:
+with open('model4_nocyclic_test_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
 # Model 5
@@ -196,12 +196,12 @@ print(f"F1: {f1}")
 print(f"Accuracy: {acc}")
 print(f"Confusion Matrix: {cm}")
 # Save the model
-torch.save(model5.state_dict(), 'model5.pth')
+torch.save(model5.state_dict(), 'model5_nocyclic.pth')
 # Save the training and testing losses as well  
-with open('model5_train_losses.pkl', 'wb') as f:
+with open('model5_nocyclic_train_losses.pkl', 'wb') as f:
     pickle.dump(train_losses, f)
 
-with open('model5_test_losses.pkl', 'wb') as f:
+with open('model5_nocyclic_test_losses.pkl', 'wb') as f:
     pickle.dump(test_losses, f)
 
 
