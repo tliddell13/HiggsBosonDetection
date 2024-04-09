@@ -15,7 +15,8 @@ from sklearn.preprocessing import StandardScaler
 
 
 # Load the data
-dataset = pd.read_csv('dataset/HIGGS_train.csv')
+# Check where the dataset is stored. Different if local or on HPC
+dataset = pd.read_csv('../HIGGS_train.csv')
 dataset = dataset.sample(frac=0.33)
 # This time I am going to use cyclic feature encoding on the angular features and scaling all the features
 # I discuss this more in the data manip ipynb
